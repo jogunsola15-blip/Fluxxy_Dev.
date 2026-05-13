@@ -1,0 +1,151 @@
+/* 1. Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* 2. Fixed Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 5%;
+    width: 100%;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo h1 {
+    font-size: 2.8rem;
+    font-family: "Lavishly Yours", cursive;
+    color: cyan;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.logo h1:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 15px cyan;
+}
+
+.nav_links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav_links a {
+    text-decoration: none;
+    color: #888;
+    transition: 0.3s;
+}
+
+.nav_links a:hover {
+    color: cyan;
+}
+
+/* 3. The Robot Background & Scroll Animation */
+@keyframes blur-bg {
+    0% { filter: blur(0px); }
+    100% { filter: blur(15px); }
+}
+
+.robot_3d {
+    position: fixed;
+    top: 0;
+    right: -10%; 
+    width: 110%; 
+    height: 100vh;
+    z-index: 1;
+    border: none;
+
+    /* Link animation to the About section scroll */
+    animation: blur-bg linear both;
+    animation-timeline: --aboutTimeline;
+    /* entry 0% = bottom of screen, entry 100% = top of screen */
+    animation-range: entry 0% entry 100%; 
+}
+
+/* 4. Layout & Zigzag Sections */
+section {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 8%;
+}
+
+/* Home starts at top but ensures robot is sharp */
+#home {
+    z-index: 10;
+}
+
+/* The Trigger for the blur effect */
+#about {
+    view-timeline-name: --aboutTimeline;
+    view-timeline-axis: block;
+}
+
+/* General Content Rules */
+section .content {
+    grid-column: 1;
+    max-width: 500px;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 1);
+}
+
+/* Flip text to the right for every even section (2nd, 4th, etc) */
+section:nth-of-type(even) .content {
+    grid-column: 2;
+}
+
+section:nth-of-type(even) {
+    text-align: right;
+}
+
+/* Typography */
+section h2 {
+    font-size: 3.5rem;
+    color: cyan;
+    margin-bottom: 1.5rem;
+}
+
+section p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 5. Mobile Adjustments */
+@media (max-width: 900px) {
+    section {
+        grid-template-columns: 1fr;
+        text-align: center !important;
+    }
+    
+    section .content, section:nth-of-type(even) .content {
+        grid-column: 1;
+        margin: 0 auto;
+    }
+
+    .robot_3d {
+        opacity: 0.6;
+        animation: none; /* Disable scroll blur on mobile for speed */
+        filter: blur(8px); /* Static blur for readability */
+    }
+}
